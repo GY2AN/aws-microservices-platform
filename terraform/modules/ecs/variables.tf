@@ -1,0 +1,10 @@
+variable "project_name" { type = string }
+variable "vpc_id" { type = string }
+variable "public_subnets" { type = list(string) }
+variable "alb_sg_id" { type = string }
+variable "user_tg_arn" { type = string }
+variable "order_tg_arn" { type = string }
+variable "product_tg_arn" { type = string }
+variable "ecr_user_url" { type = string }
+variable "ecr_order_url" { type = string }
+variable "ecr_product_url" { type = string }
