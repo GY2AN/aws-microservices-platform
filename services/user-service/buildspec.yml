@@ -18,8 +18,10 @@ phases:
       - echo Pushing Docker image...
       - docker push $ECR_REGISTRY/ecommerce/user-service:$IMAGE_TAG
       - docker push $ECR_REGISTRY/ecommerce/user-service:latest
+      - cd $CODEBUILD_SRC_DIR
       - printf '[{"name":"user-service","imageUri":"%s"}]' $ECR_REGISTRY/ecommerce/user-service:$IMAGE_TAG > imagedefinitions.json
 
 artifacts:
   files:
     - imagedefinitions.json
+  base-directory: .
