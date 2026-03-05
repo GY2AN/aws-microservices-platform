@@ -14,3 +14,7 @@ output "ecr_order_service_url" {
 output "ecr_product_service_url" {
   value = module.ecr.product_service_url
 }
+
+output "api_gateway_url" {
+  value = module.api_gateway.api_url
+}

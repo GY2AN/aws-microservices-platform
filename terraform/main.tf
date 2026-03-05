@@ -65,3 +65,16 @@ module "codepipeline" {
   github_repo      = "GY2AN/aws-microservices-platform"
   ecs_cluster_name = module.ecs.cluster_name
 }
+
+module "lambda" {
+  source       = "./modules/lambda"
+  project_name = var.project_name
+}
+
+module "api_gateway" {
+  source                  = "./modules/api-gateway"
+  project_name            = var.project_name
+  alb_dns_name            = module.alb.alb_dns_name
+  authorizer_invoke_arn   = module.lambda.authorizer_invoke_arn
+  authorizer_function_arn = "arn:aws:lambda:us-east-1:050763643556:function:ecommerce-authorizer"
+}
