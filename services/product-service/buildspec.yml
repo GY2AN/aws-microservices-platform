@@ -10,16 +10,16 @@ phases:
   build:
     commands:
       - echo Building Docker image...
-      - cd services/user-service
-      - docker build -t $ECR_REGISTRY/ecommerce/user-service:$IMAGE_TAG .
-      - docker tag $ECR_REGISTRY/ecommerce/user-service:$IMAGE_TAG $ECR_REGISTRY/ecommerce/user-service:latest
+      - cd services/product-service
+      - docker build -t $ECR_REGISTRY/ecommerce/product-service:$IMAGE_TAG .
+      - docker tag $ECR_REGISTRY/ecommerce/product-service:$IMAGE_TAG $ECR_REGISTRY/ecommerce/product-service:latest
   post_build:
     commands:
       - echo Pushing Docker image...
-      - docker push $ECR_REGISTRY/ecommerce/user-service:$IMAGE_TAG
-      - docker push $ECR_REGISTRY/ecommerce/user-service:latest
+      - docker push $ECR_REGISTRY/ecommerce/product-service:$IMAGE_TAG
+      - docker push $ECR_REGISTRY/ecommerce/product-service:latest
       - cd $CODEBUILD_SRC_DIR
-      - printf '[{"name":"product-service","imageUri":"%s"}]' $ECR_REGISTRY/ecommerce/user-service:$IMAGE_TAG > imagedefinitions.json
+      - printf '[{"name":"product-service","imageUri":"%s"}]' $ECR_REGISTRY/ecommerce/product-service:$IMAGE_TAG > imagedefinitions.json
 
 artifacts:
   files:
