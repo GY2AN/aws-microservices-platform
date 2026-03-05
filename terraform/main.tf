@@ -57,3 +57,11 @@ module "ecs" {
   ecr_order_url       = module.ecr.order_service_url
   ecr_product_url     = module.ecr.product_service_url
 }
+
+module "codepipeline" {
+  source           = "./modules/codepipeline"
+  project_name     = var.project_name
+  ecr_registry     = "050763643556.dkr.ecr.us-east-1.amazonaws.com"
+  github_repo      = "GY2AN/aws-microservices-platform"
+  ecs_cluster_name = module.ecs.cluster_name
+}
