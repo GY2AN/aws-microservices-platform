@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E-Commerce Microservices Demo</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; background: #f0f2f5; }
+    header { background: #232f3e; color: white; padding: 20px 40px; }
+    header h1 { font-size: 24px; }
+    header p { color: #ff9900; font-size: 14px; margin-top: 4px; }
+    .container { max-width: 900px; margin: 40px auto; padding: 0 20px; }
+    .api-info { background: white; border-radius: 8px; padding: 20px; margin-bottom: 24px; border-left: 4px solid #ff9900; }
+    .api-info code { background: #f4f4f4; padding: 4px 8px; border-radius: 4px; font-size: 13px; }
+    .buttons { display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap; }
+    button { padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer; font-size: 14px; font-weight: bold; transition: opacity 0.2s; }
+    button:hover { opacity: 0.85; }
+    .btn-users { background: #ff9900; color: white; }
+    .btn-orders { background: #146eb4; color: white; }
+    .btn-products { background: #1a7f37; color: white; }
+    .btn-unauth { background: #d13212; color: white; }
+    .output-box { background: white; border-radius: 8px; padding: 20px; min-height: 200px; }
+    .output-box h3 { margin-bottom: 12px; color: #232f3e; }
+    pre { background: #f4f4f4; padding: 16px; border-radius: 6px; overflow-x: auto; font-size: 13px; line-height: 1.6; }
+    .status { display: inline-block; padding: 4px 10px; border-radius: 12px; font-size: 12px; font-weight: bold; margin-bottom: 8px; }
+    .status.success { background: #d4edda; color: #155724; }
+    .status.error { background: #f8d7da; color: #721c24; }
+    .status.loading { background: #fff3cd; color: #856404; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🛒 E-Commerce Microservices Platform</h1>
+    <p>Built on AWS — ECS + API Gateway + Lambda + CloudFront + Terraform</p>
+  </header>
+
+  <div class="container">
+    <div class="api-info">
+      <strong>API Gateway URL:</strong>
+      <code id="api-url">https://rqzegyx28d.execute-api.us-east-1.amazonaws.com/prod</code>
+      <br><br>
+      <strong>Auth Token:</strong> <code>Bearer mytoken123</code>
+    </div>
+
+    <div class="buttons">
+      <button class="btn-users" onclick="fetchData('/users')">👤 Get Users</button>
+      <button class="btn-orders" onclick="fetchData('/orders')">📦 Get Orders</button>
+      <button class="btn-products" onclick="fetchData('/products')">🛍️ Get Products</button>
+      <button class="btn-unauth" onclick="fetchData('/users', false)">🔒 Test Unauthorized</button>
+    </div>
+
+    <div class="output-box">
+      <h3>Response</h3>
+      <div id="status"></div>
+      <pre id="output">Click a button to call a microservice via API Gateway...</pre>
+    </div>
+  </div>
+
+  <script>
+    const API_URL = 'https://rqzegyx28d.execute-api.us-east-1.amazonaws.com/prod';
+
+    async function fetchData(path, withAuth = true) {
+      const statusEl = document.getElementById('status');
+      const outputEl = document.getElementById('output');
+
+      statusEl.innerHTML = '<span class="status loading">⏳ Loading...</span>';
+      outputEl.textContent = 'Fetching data...';
+
+      const headers = {};
+      if (withAuth) {
+        headers['Authorization'] = 'Bearer mytoken123';
+      }
+
+      try {
+        const response = await fetch(API_URL + path, { headers });
+        const data = await response.json();
+
+        if (response.ok) {
+          statusEl.innerHTML = `<span class="status success">✅ ${response.status} OK — ${path}</span>`;
+        } else {
+          statusEl.innerHTML = `<span class="status error">❌ ${response.status} — ${path}</span>`;
+        }
+
+        outputEl.textContent = JSON.stringify(data, null, 2);
+      } catch (err) {
+        statusEl.innerHTML = '<span class="status error">❌ Network Error</span>';
+        outputEl.textContent = 'Error: ' + err.message;
+      }
+    }
+  </script>
+</body>
+</html>
