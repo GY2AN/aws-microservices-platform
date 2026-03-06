@@ -78,8 +78,3 @@ module "api_gateway" {
   authorizer_invoke_arn   = module.lambda.authorizer_invoke_arn
   authorizer_function_arn = "arn:aws:lambda:us-east-1:050763643556:function:ecommerce-authorizer"
 }
-
-module "s3_cloudfront" {
-  source       = "./modules/s3-cloudfront"
-  project_name = var.project_name
-}
